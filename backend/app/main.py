@@ -20,14 +20,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-def on_startup():
-    Base.metadata.create_all(bind=engine)
-
 app.include_router(sprints_router)
 app.include_router(collaborators_router)
 app.include_router(capacities_router)
 app.include_router(issues_router)
 app.include_router(metrics_router)
 
-#uvicorn app.main:app --reload --port 8000
+#python -m uvicorn app.main:app --reload --port 8000

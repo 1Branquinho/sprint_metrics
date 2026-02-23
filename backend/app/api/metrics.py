@@ -5,10 +5,11 @@ from app.models.sprint import Sprint
 from app.models.issue import Issue
 from app.models.collaborator_capacity import CollaboratorCapacity
 from app.analytics.sprint_metrics import compute_sprint_metrics
+from app.schemas.metrics import SprintMetricsResponse
 
 router = APIRouter(prefix="/metrics", tags=["metrics"])
 
-@router.get("/sprint/{sprint_number}")
+@router.get("/sprint/{sprint_number}", response_model=SprintMetricsResponse)
 def get_sprint_metrics(sprint_number: int, db: Session = Depends(get_db)):
     sprint = db.get(Sprint, sprint_number)
     if sprint is None:
@@ -58,4 +59,5 @@ def get_sprint_metrics(sprint_number: int, db: Session = Depends(get_db)):
         for c in capacities
     ]
 
-    return compute_sprint_metrics(sprint_row, issues_rows, capacities_rows)
+    data = compute_sprint_metrics(sprint_row, issues_rows, capacities_rows)
+    return data

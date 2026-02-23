@@ -10,12 +10,14 @@ from app.repositories.issue_repository import IssueRepository
 
 router = APIRouter(prefix="/issues", tags=["issues"])
 
+
 @router.post("", response_model=IssueRead, status_code=201)
 def create_issue(payload: IssueCreate, db: Session = Depends(get_db)):
     try:
         return IssueService.create(db, payload)
     except DomainError as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+
 
 @router.put("/{issue_id}", response_model=IssueRead)
 def update_issue(issue_id: int, payload: IssueUpdate, db: Session = Depends(get_db)):
@@ -26,6 +28,7 @@ def update_issue(issue_id: int, payload: IssueUpdate, db: Session = Depends(get_
         return IssueService.update(db, issue, payload)
     except DomainError as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+
 
 @router.get("", response_model=Page[IssueRead])
 def list_issues(
@@ -52,10 +55,11 @@ def list_issues(
 
     return Page(items=items, total=total, limit=limit, offset=offset)
 
+
 @router.delete("/{issue_id}", status_code=204)
 def delete_issue(issue_id: int, db: Session = Depends(get_db)):
     issue = IssueRepository.get_by_id(db, issue_id)
     if issue is None:
         raise HTTPException(status_code=404, detail="Issue not found")
-    db.delete(issue)
-    db.commit()
+
+    IssueService.delete(db, issue)

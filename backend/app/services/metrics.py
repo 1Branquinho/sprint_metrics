@@ -1,13 +1,21 @@
 from sqlalchemy.orm import Session
 from app.core.exceptions import DomainError
+from app.core.cache import get_cached, set_cached
 from app.analytics.sprint_metrics import compute_sprint_metrics
 from app.repositories.sprint_repository import SprintRepository
 from app.repositories.metrics_repository import MetricsRepository
+
 
 class MetricsService:
 
     @staticmethod
     def get_sprint_metrics(db: Session, sprint_number: int):
+
+        cache_key = f"sprint_metrics:{sprint_number}"
+        cached = get_cached(cache_key)
+        if cached:
+            return cached
+
         sprint = SprintRepository.get_by_number(db, sprint_number)
         if sprint is None:
             raise DomainError(404, "Sprint not found")
@@ -47,4 +55,12 @@ class MetricsService:
             for c in capacities
         ]
 
-        return compute_sprint_metrics(sprint_row, issues_rows, capacities_rows)
+        result = compute_sprint_metrics(
+            sprint_row,
+            issues_rows,
+            capacities_rows,
+        )
+
+        set_cached(cache_key, result, ttl=60)
+
+        return result

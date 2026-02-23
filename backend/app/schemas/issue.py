@@ -1,5 +1,6 @@
 from datetime import date
 from pydantic import BaseModel, ConfigDict
+from app.core.enums import IssueStatus
 
 class IssueCreate(BaseModel):
     sprint_number: int
@@ -8,7 +9,7 @@ class IssueCreate(BaseModel):
     title: str
     story_points: int
     assignee_id: int
-    status: str
+    status: IssueStatus
     created_at: date
     work_day: date
 
@@ -19,7 +20,7 @@ class IssueUpdate(BaseModel):
     title: str | None = None
     story_points: int | None = None
     assignee_id: int | None = None
-    status: str | None = None
+    status: IssueStatus | None = None
     created_at: date | None = None
     work_day: date | None = None
 
@@ -33,7 +34,7 @@ class IssueRead(BaseModel):
     title: str
     story_points: int
     assignee_id: int
-    status: str
+    status: IssueStatus
     created_at: date
     work_day: date
     done_at: date | None

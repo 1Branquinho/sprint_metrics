@@ -15,7 +15,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "object" && error !== null && "message" in error) {
     return String((error as { message: string }).message);
   }
-  return "Unexpected request error.";
+  return "Erro inesperado na requisicao.";
 }
 
 export function CollaboratorDashboardPage() {
@@ -49,13 +49,13 @@ export function CollaboratorDashboardPage() {
 
   return (
     <PageFrame
-      title="Collaborator Dashboard"
-      subtitle="Individual delivery analytics and trends by collaborator."
+      title="Painel Individual"
+      subtitle="Analise de entrega por colaborador com evolucao diaria."
     >
       <div className="collab-dashboard">
         <div className="collab-dashboard__filters">
           <label>
-            Collaborator
+            Colaborador
             <select
               value={selectedCollaborator === null ? "" : String(selectedCollaborator)}
               onChange={(event) => {
@@ -73,7 +73,7 @@ export function CollaboratorDashboardPage() {
           </label>
 
           <label>
-            Sprint (optional)
+            Sprint (opcional)
             <select
               value={selectedSprint === null ? "" : String(selectedSprint)}
               onChange={(event) => {
@@ -86,7 +86,7 @@ export function CollaboratorDashboardPage() {
                 setSearchParams(next, { replace: true });
               }}
             >
-              <option value="">All sprints</option>
+              <option value="">Todas as sprints</option>
               {(sprintsQuery.data?.items ?? []).map((sprint) => (
                 <option key={sprint.sprint_number} value={String(sprint.sprint_number)}>
                   Sprint {sprint.sprint_number}
@@ -97,14 +97,14 @@ export function CollaboratorDashboardPage() {
         </div>
 
         {metricsQuery.isLoading || collaboratorsQuery.isLoading ? (
-          <p className="collab-dashboard__state">Loading collaborator metrics...</p>
+          <p className="collab-dashboard__state">Carregando metricas do colaborador...</p>
         ) : null}
 
         {metricsQuery.isError ? (
           <div className="collab-dashboard__state collab-dashboard__state--error">
             <p>{getErrorMessage(metricsQuery.error)}</p>
             <button onClick={() => metricsQuery.refetch()} type="button">
-              Retry
+              Tentar novamente
             </button>
           </div>
         ) : null}
@@ -112,20 +112,20 @@ export function CollaboratorDashboardPage() {
         {metricsQuery.data ? (
           <>
             <section className="collab-dashboard__kpis">
-              <MetricCard label="Points Done" value={metricsQuery.data.kpis.pointsDone} tone="success" />
-              <MetricCard label="Points Open" value={metricsQuery.data.kpis.pointsOpen} tone="warning" />
-              <MetricCard label="Issues Done" value={metricsQuery.data.kpis.issuesDone} />
-              <MetricCard label="Issues Open" value={metricsQuery.data.kpis.issuesOpen} />
+              <MetricCard label="Pontos concluidos" value={metricsQuery.data.kpis.pointsDone} tone="success" />
+              <MetricCard label="Pontos em aberto" value={metricsQuery.data.kpis.pointsOpen} tone="warning" />
+              <MetricCard label="Issues concluidas" value={metricsQuery.data.kpis.issuesDone} />
+              <MetricCard label="Issues abertas" value={metricsQuery.data.kpis.issuesOpen} />
               <MetricCard
-                label="Avg Points / Done Issue"
+                label="Media de pontos por issue concluida"
                 value={metricsQuery.data.kpis.avgPointsPerDoneIssue}
               />
               <MetricCard
-                label="Lead Time Avg (days)"
+                label="Lead time medio (dias)"
                 value={metricsQuery.data.kpis.leadTimeDaysAvg ?? "-"}
               />
-              <MetricCard label="Expected Points" value={metricsQuery.data.kpis.expectedPoints} />
-              <MetricCard label="Min Points" value={metricsQuery.data.kpis.minPoints} />
+              <MetricCard label="Pontos esperados" value={metricsQuery.data.kpis.expectedPoints} />
+              <MetricCard label="Pontos minimos" value={metricsQuery.data.kpis.minPoints} />
             </section>
 
             <section className="collab-dashboard__charts-grid">

@@ -15,7 +15,7 @@ const defaultWidgets: SprintWidgetConfig[] = [
   },
   {
     id: "status_breakdown",
-    title: "Status breakdown",
+    title: "Distribuicao por status",
     enabled: true,
     chartType: "bar",
     metricMode: "points",
@@ -23,7 +23,7 @@ const defaultWidgets: SprintWidgetConfig[] = [
   },
   {
     id: "assignee_summary",
-    title: "Summary by assignee",
+    title: "Resumo por responsavel",
     enabled: true,
     chartType: "table",
     metricMode: "points",

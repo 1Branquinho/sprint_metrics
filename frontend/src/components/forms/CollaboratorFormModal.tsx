@@ -45,31 +45,31 @@ export function CollaboratorFormModal({
     <div className="collaborator-modal__backdrop" role="presentation">
       <div aria-modal="true" className="collaborator-modal" role="dialog">
         <header className="collaborator-modal__header">
-          <h3>Create collaborator</h3>
+          <h3>Novo colaborador</h3>
           <button onClick={onClose} type="button">
-            Close
+            Fechar
           </button>
         </header>
 
         <form className="collaborator-modal__form" onSubmit={handleSubmit}>
           <label>
-            Name
+            Nome
             <input required value={name} onChange={(event) => setName(event.target.value)} />
           </label>
 
           <label className="collaborator-modal__checkbox">
             <input checked={active} onChange={(event) => setActive(event.target.checked)} type="checkbox" />
-            Active
+            Ativo
           </label>
 
           {errorMessage ? <p className="collaborator-modal__error">{errorMessage}</p> : null}
 
           <footer className="collaborator-modal__footer">
             <button onClick={onClose} type="button">
-              Cancel
+              Cancelar
             </button>
             <button disabled={name.trim() === "" || isSubmitting} type="submit">
-              {isSubmitting ? "Saving..." : "Create"}
+              {isSubmitting ? "Salvando..." : "Criar"}
             </button>
           </footer>
         </form>

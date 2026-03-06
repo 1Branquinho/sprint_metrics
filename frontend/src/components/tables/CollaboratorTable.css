@@ -2,6 +2,7 @@
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 12px;
+  background: #ffffff;
 }
 
 .collaborator-table {
@@ -13,27 +14,31 @@
 .collaborator-table th,
 .collaborator-table td {
   text-align: left;
-  padding: 10px 12px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border);
 }
 
+.collaborator-table tbody tr:hover {
+  background: #f6fafc;
+}
+
 .collaborator-table thead th {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .collaborator-table__status {
   display: inline-flex;
   border-radius: 999px;
   padding: 4px 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 650;
 }
 
 .collaborator-table__status--active {
-  background: #d8f3e9;
+  background: #dcf3ec;
   color: #1d6f52;
 }
 
@@ -49,8 +54,6 @@
 
 .collaborator-table__actions a {
   display: inline-flex;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
+  background: var(--surface-alt);
   padding: 6px 10px;
 }

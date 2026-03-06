@@ -6,11 +6,8 @@
 }
 
 .pagination button {
-  border: 1px solid var(--border);
   background: var(--surface);
-  border-radius: 8px;
-  padding: 6px 10px;
-  cursor: pointer;
+  padding: 7px 12px;
 }
 
 .pagination button:disabled {
@@ -20,5 +17,5 @@
 
 .pagination span {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.93rem;
 }

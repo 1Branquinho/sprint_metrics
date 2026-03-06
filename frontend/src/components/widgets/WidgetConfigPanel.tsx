@@ -25,6 +25,38 @@ const groupByByWidget: Record<SprintWidgetConfig["id"], SprintWidgetConfig["grou
   assignee_summary: ["assignee"],
 };
 
+function chartLabel(value: SprintWidgetConfig["chartType"]): string {
+  const labels: Record<SprintWidgetConfig["chartType"], string> = {
+    bar: "Barras",
+    line: "Linhas",
+    area: "Area",
+    pie: "Pizza",
+    table: "Tabela",
+  };
+
+  return labels[value];
+}
+
+function metricLabel(value: SprintWidgetConfig["metricMode"]): string {
+  const labels: Record<SprintWidgetConfig["metricMode"], string> = {
+    points: "Pontos",
+    count: "Quantidade",
+  };
+
+  return labels[value];
+}
+
+function groupByLabel(value: SprintWidgetConfig["groupBy"]): string {
+  const labels: Record<SprintWidgetConfig["groupBy"], string> = {
+    day: "Dia",
+    status: "Status",
+    assignee: "Responsavel",
+    sprint: "Sprint",
+  };
+
+  return labels[value];
+}
+
 export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps) {
   function patch(id: SprintWidgetConfig["id"], patchValue: Partial<SprintWidgetConfig>) {
     const next = widgets.map((widget) => (widget.id === id ? { ...widget, ...patchValue } : widget));
@@ -52,7 +84,7 @@ export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps)
     <section className="widget-config">
       <header>
         <h3>Widgets</h3>
-        <p>Controlled presets with local persistence.</p>
+        <p>Presets controlados com persistencia local.</p>
       </header>
 
       <div className="widget-config__list">
@@ -66,13 +98,13 @@ export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps)
                   onChange={(event) => patch(widget.id, { enabled: event.target.checked })}
                   type="checkbox"
                 />
-                Enabled
+                Ativo
               </label>
             </div>
 
             <div className="widget-config__controls">
               <label>
-                Chart
+                Grafico
                 <select
                   value={widget.chartType}
                   onChange={(event) =>
@@ -83,14 +115,14 @@ export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps)
                 >
                   {chartOptionsByWidget[widget.id].map((option) => (
                     <option key={option} value={option}>
-                      {option}
+                      {chartLabel(option)}
                     </option>
                   ))}
                 </select>
               </label>
 
               <label>
-                Metric
+                Metrica
                 <select
                   value={widget.metricMode}
                   onChange={(event) =>
@@ -101,14 +133,14 @@ export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps)
                 >
                   {metricOptionsByWidget[widget.id].map((option) => (
                     <option key={option} value={option}>
-                      {option}
+                      {metricLabel(option)}
                     </option>
                   ))}
                 </select>
               </label>
 
               <label>
-                Group by
+                Agrupar por
                 <select
                   value={widget.groupBy}
                   onChange={(event) =>
@@ -119,7 +151,7 @@ export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps)
                 >
                   {groupByByWidget[widget.id].map((option) => (
                     <option key={option} value={option}>
-                      {option}
+                      {groupByLabel(option)}
                     </option>
                   ))}
                 </select>
@@ -128,10 +160,10 @@ export function WidgetConfigPanel({ widgets, onChange }: WidgetConfigPanelProps)
 
             <div className="widget-config__order-actions">
               <button onClick={() => move(widget.id, "up")} type="button">
-                Move up
+                Subir
               </button>
               <button onClick={() => move(widget.id, "down")} type="button">
-                Move down
+                Descer
               </button>
             </div>
           </article>

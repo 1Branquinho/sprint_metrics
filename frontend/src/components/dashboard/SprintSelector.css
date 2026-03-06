@@ -6,9 +6,7 @@
 }
 
 .sprint-selector select {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 10px;
   background: var(--surface);
-  min-width: 220px;
+  padding: 9px 11px;
+  min-width: 240px;
 }

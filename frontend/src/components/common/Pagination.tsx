@@ -1,3 +1,5 @@
+import { formatNumber } from "@/utils/format";
+
 import "./Pagination.css";
 
 type PaginationProps = {
@@ -16,13 +18,13 @@ export function Pagination({ total, limit, offset, onChange }: PaginationProps) 
   return (
     <div className="pagination">
       <button disabled={!hasPrevious} onClick={() => onChange(Math.max(0, offset - limit))} type="button">
-        Previous
+        Anterior
       </button>
       <span>
-        Page {currentPage} of {totalPages}
+        Pagina {formatNumber(currentPage)} de {formatNumber(totalPages)}
       </span>
       <button disabled={!hasNext} onClick={() => onChange(offset + limit)} type="button">
-        Next
+        Proxima
       </button>
     </div>
   );

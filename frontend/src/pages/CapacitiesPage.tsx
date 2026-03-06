@@ -27,7 +27,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "object" && error !== null && "message" in error) {
     return String((error as { message: string }).message);
   }
-  return "Unexpected request error.";
+  return "Erro inesperado na requisicao.";
 }
 
 export function CapacitiesPage() {
@@ -78,7 +78,7 @@ export function CapacitiesPage() {
   const isLoading = capacitiesQuery.isLoading || sprintsQuery.isLoading || collaboratorsQuery.isLoading;
 
   return (
-    <PageFrame title="Capacities" subtitle="Capacity planning per sprint and collaborator.">
+    <PageFrame title="Capacidades" subtitle="Planejamento de capacidade por sprint e colaborador.">
       <div className="capacities-page">
         <div className="capacities-page__toolbar">
           <CapacityFilters
@@ -94,27 +94,27 @@ export function CapacitiesPage() {
           />
 
           <button onClick={() => setIsCreateOpen(true)} type="button">
-            Create capacity
+            Nova capacidade
           </button>
         </div>
 
         <p className="capacities-page__hint">
-          Note: update/delete actions will be enabled when backend exposes PUT/DELETE endpoints.
+          Observacao: acoes de atualizar/excluir serao habilitadas quando o backend expor endpoints de PUT/DELETE.
         </p>
 
-        {isLoading ? <p className="capacities-page__state">Loading capacities...</p> : null}
+        {isLoading ? <p className="capacities-page__state">Carregando capacidades...</p> : null}
 
         {capacitiesQuery.isError ? (
           <div className="capacities-page__state capacities-page__state--error">
             <p>{getErrorMessage(capacitiesQuery.error)}</p>
             <button onClick={() => capacitiesQuery.refetch()} type="button">
-              Retry
+              Tentar novamente
             </button>
           </div>
         ) : null}
 
         {!isLoading && !capacitiesQuery.isError && capacitiesQuery.data?.items.length === 0 ? (
-          <p className="capacities-page__state">No capacities found for selected filters.</p>
+          <p className="capacities-page__state">Nenhuma capacidade encontrada para os filtros selecionados.</p>
         ) : null}
 
         {!isLoading && !capacitiesQuery.isError && capacitiesQuery.data && capacitiesQuery.data.items.length > 0 ? (

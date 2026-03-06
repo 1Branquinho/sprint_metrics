@@ -13,6 +13,7 @@ import { useSprintMetrics } from "@/hooks/useSprintMetrics";
 import { useSprints } from "@/hooks/useSprints";
 import { useSprintWidgets } from "@/hooks/useSprintWidgets";
 import type { SprintWidgetConfig } from "@/types/widgets";
+import { issueStatusLabelFromUnknown } from "@/utils/status";
 
 import "./SprintDashboardPage.css";
 
@@ -22,7 +23,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "object" && error !== null && "message" in error) {
     return String((error as { message: string }).message);
   }
-  return "Unexpected request error.";
+  return "Erro inesperado na requisicao.";
 }
 
 export function SprintDashboardPage() {
@@ -84,7 +85,7 @@ export function SprintDashboardPage() {
   }
 
   return (
-    <PageFrame title="Sprint Dashboard" subtitle="Consolidated sprint execution KPIs and burndown.">
+    <PageFrame title="Painel da Sprint" subtitle="KPIs consolidados da execucao e do burndown da sprint.">
       <div className="sprint-dashboard">
         <div className="sprint-dashboard__controls">
           <SprintSelector
@@ -99,45 +100,45 @@ export function SprintDashboardPage() {
         <WidgetConfigPanel widgets={widgets} onChange={update} />
         <div className="sprint-dashboard__widget-actions">
           <button onClick={reset} type="button">
-            Reset widget defaults
+            Restaurar widgets padrao
           </button>
         </div>
 
         {metricsQuery.isLoading || sprintsQuery.isLoading ? (
-          <p className="sprint-dashboard__state">Loading sprint metrics...</p>
+          <p className="sprint-dashboard__state">Carregando metricas da sprint...</p>
         ) : null}
 
         {metricsQuery.isError ? (
           <div className="sprint-dashboard__state sprint-dashboard__state--error">
             <p>{getErrorMessage(metricsQuery.error)}</p>
             <button onClick={() => metricsQuery.refetch()} type="button">
-              Retry
+              Tentar novamente
             </button>
           </div>
         ) : null}
 
         {!metricsQuery.isLoading && !metricsQuery.isError && !metricsQuery.data ? (
-          <p className="sprint-dashboard__state">Select a sprint to visualize metrics.</p>
+          <p className="sprint-dashboard__state">Selecione uma sprint para visualizar as metricas.</p>
         ) : null}
 
         {metricsQuery.data ? (
           <>
             <section className="sprint-dashboard__kpis">
-              <MetricCard label="Sprint Days" value={metricsQuery.data.sprintInfo.sprintDays} />
-              <MetricCard label="Total Hours" value={metricsQuery.data.sprintInfo.totalHours} />
-              <MetricCard label="Total Story Points" value={metricsQuery.data.sprintInfo.totalStoryPoints} />
+              <MetricCard label="Dias da sprint" value={metricsQuery.data.sprintInfo.sprintDays} />
+              <MetricCard label="Horas totais" value={metricsQuery.data.sprintInfo.totalHours} />
+              <MetricCard label="Story points totais" value={metricsQuery.data.sprintInfo.totalStoryPoints} />
               <MetricCard
-                label="Done Story Points"
+                label="Story points concluidos"
                 value={metricsQuery.data.sprintInfo.doneStoryPoints}
                 tone="success"
               />
               <MetricCard
-                label="Open Story Points"
+                label="Story points em aberto"
                 value={metricsQuery.data.sprintInfo.openStoryPoints}
                 tone="warning"
               />
               <MetricCard
-                label="Expected Total Story Points"
+                label="Story points esperados"
                 value={metricsQuery.data.sprintInfo.expectedTotalStoryPoints}
               />
             </section>
@@ -146,7 +147,7 @@ export function SprintDashboardPage() {
               {statusOrder.map((status) => (
                 <MetricCard
                   key={status}
-                  label={`${status} points`}
+                  label={`${issueStatusLabelFromUnknown(status)} (pts)`}
                   value={metricsQuery.data.sprintInfo.statusPoints[status] ?? 0}
                 />
               ))}

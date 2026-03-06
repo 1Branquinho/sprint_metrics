@@ -19,7 +19,7 @@ const CollaboratorDashboardPage = lazy(() =>
 );
 
 function LazyPage({ children }: { children: ReactNode }) {
-  return <Suspense fallback={<p style={{ margin: 0 }}>Loading dashboard module...</p>}>{children}</Suspense>;
+  return <Suspense fallback={<p style={{ margin: 0 }}>Carregando painel...</p>}>{children}</Suspense>;
 }
 
 export const router = createBrowserRouter([

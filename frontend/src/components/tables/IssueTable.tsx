@@ -1,6 +1,8 @@
 import type { Collaborator } from "@/api/collaborators";
 import type { Issue, IssueStatus } from "@/api/issues";
 import { formatDate } from "@/utils/date";
+import { formatNumber } from "@/utils/format";
+import { issueStatusLabel, issueStatusOptions } from "@/utils/status";
 
 import { IssueStatusBadge } from "@/components/common/IssueStatusBadge";
 
@@ -14,8 +16,6 @@ type IssueTableProps = {
   onDelete: (issue: Issue) => void;
   onChangeStatus: (issue: Issue, status: IssueStatus) => void;
 };
-
-const statusOptions: IssueStatus[] = ["TODO", "DOING", "CODE REVIEW", "TESTING", "DONE"];
 
 export function IssueTable({
   issues,
@@ -33,14 +33,14 @@ export function IssueTable({
         <thead>
           <tr>
             <th>Issue</th>
-            <th>Title</th>
+            <th>Titulo</th>
             <th>Story points</th>
-            <th>Assignee</th>
+            <th>Responsavel</th>
             <th>Status</th>
-            <th>Created</th>
-            <th>Work day</th>
-            <th>Done at</th>
-            <th className="issue-table__actions-header">Actions</th>
+            <th>Criada em</th>
+            <th>Dia de trabalho</th>
+            <th>Concluida em</th>
+            <th className="issue-table__actions-header">Acoes</th>
           </tr>
         </thead>
         <tbody>
@@ -48,8 +48,8 @@ export function IssueTable({
             <tr key={issue.id}>
               <td>{issue.issue_number}</td>
               <td>{issue.title}</td>
-              <td>{issue.story_points}</td>
-              <td>{collaboratorMap.get(issue.assignee_id) ?? `#${issue.assignee_id}`}</td>
+              <td>{formatNumber(issue.story_points)}</td>
+              <td>{collaboratorMap.get(issue.assignee_id) ?? `#${formatNumber(issue.assignee_id)}`}</td>
               <td>
                 <div className="issue-table__status-cell">
                   <IssueStatusBadge status={issue.status} />
@@ -58,9 +58,9 @@ export function IssueTable({
                     onChange={(event) => onChangeStatus(issue, event.target.value as IssueStatus)}
                     value={issue.status}
                   >
-                    {statusOptions.map((status) => (
+                    {issueStatusOptions.map((status) => (
                       <option key={status} value={status}>
-                        {status}
+                        {issueStatusLabel(status)}
                       </option>
                     ))}
                   </select>
@@ -71,10 +71,10 @@ export function IssueTable({
               <td>{formatDate(issue.done_at)}</td>
               <td className="issue-table__actions">
                 <button onClick={() => onEdit(issue)} type="button">
-                  Edit
+                  Editar
                 </button>
                 <button className="danger" onClick={() => onDelete(issue)} type="button">
-                  Delete
+                  Excluir
                 </button>
               </td>
             </tr>

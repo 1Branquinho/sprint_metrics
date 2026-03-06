@@ -101,15 +101,15 @@ export function SprintFormModal({
     <div className="sprint-modal__backdrop" role="presentation">
       <div aria-modal="true" className="sprint-modal" role="dialog">
         <header className="sprint-modal__header">
-          <h3>Create sprint</h3>
+          <h3>Nova sprint</h3>
           <button onClick={onClose} type="button">
-            Close
+            Fechar
           </button>
         </header>
 
         <form className="sprint-modal__form" onSubmit={handleSubmit}>
           <label>
-            Sprint number
+            Numero da sprint
             <input
               min={1}
               required
@@ -120,7 +120,7 @@ export function SprintFormModal({
           </label>
 
           <label>
-            Start date
+            Data de inicio
             <input
               required
               type="date"
@@ -130,7 +130,7 @@ export function SprintFormModal({
           </label>
 
           <label>
-            End date
+            Data de fim
             <input
               required
               type="date"
@@ -140,7 +140,7 @@ export function SprintFormModal({
           </label>
 
           <label>
-            Work hours per day
+            Horas de trabalho por dia
             <input
               min={1}
               required
@@ -151,7 +151,7 @@ export function SprintFormModal({
           </label>
 
           <label>
-            Team size
+            Tamanho do time
             <input
               min={1}
               required
@@ -162,7 +162,7 @@ export function SprintFormModal({
           </label>
 
           <label>
-            Max team capacity points
+            Maximo de pontos da equipe
             <input
               min={0}
               type="number"
@@ -172,7 +172,7 @@ export function SprintFormModal({
           </label>
 
           <label className="sprint-modal__notes">
-            Notes
+            Observacoes
             <textarea
               rows={3}
               value={form.notes}
@@ -184,10 +184,10 @@ export function SprintFormModal({
 
           <footer className="sprint-modal__footer">
             <button onClick={onClose} type="button">
-              Cancel
+              Cancelar
             </button>
             <button disabled={!isValid || isSubmitting} type="submit">
-              {isSubmitting ? "Saving..." : "Create"}
+              {isSubmitting ? "Salvando..." : "Criar"}
             </button>
           </footer>
         </form>

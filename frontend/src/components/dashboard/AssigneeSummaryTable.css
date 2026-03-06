@@ -1,6 +1,6 @@
 .assignee-summary {
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
   border-radius: 12px;
   padding: var(--space-4);
 }
@@ -24,13 +24,17 @@
 .assignee-summary__table th,
 .assignee-summary__table td {
   text-align: left;
-  padding: 10px 12px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border);
 }
 
+.assignee-summary__table tbody tr:hover {
+  background: #f6fafc;
+}
+
 .assignee-summary__table th {
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }

@@ -1,6 +1,7 @@
 import type { Collaborator } from "@/api/collaborators";
 import type { IssueStatus } from "@/api/issues";
 import type { Sprint } from "@/api/sprints";
+import { issueStatusLabel, issueStatusOptions } from "@/utils/status";
 
 import "./IssueFilters.css";
 
@@ -19,12 +20,8 @@ type IssueFiltersProps = {
 };
 
 const statusOptions: Array<{ value: "" | IssueStatus; label: string }> = [
-  { value: "", label: "All statuses" },
-  { value: "TODO", label: "TODO" },
-  { value: "DOING", label: "DOING" },
-  { value: "CODE REVIEW", label: "CODE REVIEW" },
-  { value: "TESTING", label: "TESTING" },
-  { value: "DONE", label: "DONE" },
+  { value: "", label: "Todos os status" },
+  ...issueStatusOptions.map((status) => ({ value: status, label: issueStatusLabel(status) })),
 ];
 
 export function IssueFilters({
@@ -45,7 +42,7 @@ export function IssueFilters({
       <label>
         Sprint
         <select value={sprintNumber} onChange={(event) => onSprintChange(event.target.value)}>
-          <option value="">All sprints</option>
+          <option value="">Todas as sprints</option>
           {sprints.map((sprint) => (
             <option key={sprint.sprint_number} value={String(sprint.sprint_number)}>
               Sprint {sprint.sprint_number}
@@ -55,9 +52,9 @@ export function IssueFilters({
       </label>
 
       <label>
-        Assignee
+        Responsavel
         <select value={assigneeId} onChange={(event) => onAssigneeChange(event.target.value)}>
-          <option value="">All assignees</option>
+          <option value="">Todos os responsaveis</option>
           {collaborators.map((collaborator) => (
             <option key={collaborator.id} value={String(collaborator.id)}>
               {collaborator.name}
@@ -81,7 +78,7 @@ export function IssueFilters({
       </label>
 
       <label>
-        Rows
+        Linhas
         <select value={String(limit)} onChange={(event) => onLimitChange(Number(event.target.value))}>
           <option value="10">10</option>
           <option value="20">20</option>
@@ -90,7 +87,7 @@ export function IssueFilters({
       </label>
 
       <button className="issue-filters__clear" onClick={onClear} type="button">
-        Clear filters
+        Limpar filtros
       </button>
     </div>
   );

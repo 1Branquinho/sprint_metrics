@@ -33,7 +33,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "object" && error !== null && "message" in error) {
     return String((error as { message: string }).message);
   }
-  return "Unexpected request error.";
+  return "Erro inesperado na requisicao.";
 }
 
 export function CollaboratorsPage() {
@@ -74,24 +74,24 @@ export function CollaboratorsPage() {
   }
 
   return (
-    <PageFrame title="Collaborators" subtitle="People directory and active/inactive management.">
+    <PageFrame title="Colaboradores" subtitle="Cadastro de pessoas e visao de status ativo/inativo.">
       <div className="collaborators-page">
         <div className="collaborators-page__header">
           <div className="collaborators-page__filters">
             <label>
-              Active filter
+              Filtro de atividade
               <select
                 value={active === undefined ? "" : String(active)}
                 onChange={(event) => updateParams({ active: event.target.value })}
               >
-                <option value="">All</option>
-                <option value="true">Active only</option>
-                <option value="false">Inactive only</option>
+                <option value="">Todos</option>
+                <option value="true">Somente ativos</option>
+                <option value="false">Somente inativos</option>
               </select>
             </label>
 
             <label>
-              Rows
+              Linhas
               <select
                 value={String(limit)}
                 onChange={(event) => updateParams({ limit: Number(event.target.value) })}
@@ -104,23 +104,23 @@ export function CollaboratorsPage() {
           </div>
 
           <button onClick={() => setIsCreateOpen(true)} type="button">
-            Create collaborator
+            Novo colaborador
           </button>
         </div>
 
-        {collaboratorsQuery.isLoading ? <p className="collaborators-page__state">Loading collaborators...</p> : null}
+        {collaboratorsQuery.isLoading ? <p className="collaborators-page__state">Carregando colaboradores...</p> : null}
 
         {collaboratorsQuery.isError ? (
           <div className="collaborators-page__state collaborators-page__state--error">
             <p>{getErrorMessage(collaboratorsQuery.error)}</p>
             <button onClick={() => collaboratorsQuery.refetch()} type="button">
-              Retry
+              Tentar novamente
             </button>
           </div>
         ) : null}
 
         {!collaboratorsQuery.isLoading && !collaboratorsQuery.isError && collaboratorsQuery.data?.items.length === 0 ? (
-          <p className="collaborators-page__state">No collaborators found for selected filters.</p>
+          <p className="collaborators-page__state">Nenhum colaborador encontrado para os filtros.</p>
         ) : null}
 
         {!collaboratorsQuery.isLoading && !collaboratorsQuery.isError && collaboratorsQuery.data && collaboratorsQuery.data.items.length > 0 ? (

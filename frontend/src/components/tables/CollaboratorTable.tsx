@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import type { Collaborator } from "@/api/collaborators";
+import { formatNumber } from "@/utils/format";
 import { routes } from "@/utils/routes";
 
 import "./CollaboratorTable.css";
@@ -16,15 +17,15 @@ export function CollaboratorTable({ collaborators }: CollaboratorTableProps) {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Nome</th>
             <th>Status</th>
-            <th className="collaborator-table__actions-header">Actions</th>
+            <th className="collaborator-table__actions-header">Acoes</th>
           </tr>
         </thead>
         <tbody>
           {collaborators.map((collaborator) => (
             <tr key={collaborator.id}>
-              <td>#{collaborator.id}</td>
+              <td>#{formatNumber(collaborator.id)}</td>
               <td>{collaborator.name}</td>
               <td>
                 <span
@@ -34,14 +35,14 @@ export function CollaboratorTable({ collaborators }: CollaboratorTableProps) {
                       : "collaborator-table__status collaborator-table__status--inactive"
                   }
                 >
-                  {collaborator.active ? "Active" : "Inactive"}
+                  {collaborator.active ? "Ativo" : "Inativo"}
                 </span>
               </td>
               <td className="collaborator-table__actions">
                 <Link
                   to={`${routes.collaboratorDashboard}?collaborator_id=${collaborator.id}`}
                 >
-                  Open dashboard
+                  Abrir painel
                 </Link>
               </td>
             </tr>

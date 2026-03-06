@@ -1,6 +1,8 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import type { BurndownSeries } from "@/api/metrics";
+import { formatDateShort } from "@/utils/date";
+import { formatNumber } from "@/utils/format";
 
 import "./BurndownChart.css";
 
@@ -10,7 +12,7 @@ type BurndownChartProps = {
 
 export function BurndownChart({ series }: BurndownChartProps) {
   const data = series.dates.map((date, index) => ({
-    date: date.slice(5),
+    date: formatDateShort(date),
     completedDaily: series.completedDaily[index] ?? 0,
     realRemaining: series.realRemaining[index] ?? 0,
     idealRemaining: series.idealRemaining[index] ?? 0,
@@ -27,20 +29,20 @@ export function BurndownChart({ series }: BurndownChartProps) {
           <LineChart data={data} margin={{ top: 10, right: 24, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#dde5ea" />
             <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
+            <YAxis tickFormatter={formatNumber} />
+            <Tooltip formatter={(value) => formatNumber(Number(value))} />
             <Legend />
-            <Line dataKey="completedDaily" name="Completed daily" stroke="#1f8a70" strokeWidth={2} />
-            <Line dataKey="realRemaining" name="Real remaining" stroke="#0e2a3a" strokeWidth={2} />
+            <Line dataKey="completedDaily" name="Concluido no dia" stroke="#0e7c86" strokeWidth={2} />
+            <Line dataKey="realRemaining" name="Restante real" stroke="#133247" strokeWidth={2} />
             <Line
               dataKey="idealRemaining"
-              name="Ideal remaining"
+              name="Restante ideal"
               stroke="#7f8c8d"
               strokeDasharray="6 4"
             />
             <Line
               dataKey="expectedRemaining"
-              name="Expected remaining"
+              name="Restante esperado"
               stroke="#c67b1b"
               strokeDasharray="6 4"
             />

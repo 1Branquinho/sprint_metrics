@@ -12,15 +12,13 @@
 .collab-dashboard__filters label {
   display: grid;
   gap: 6px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--muted);
 }
 
 .collab-dashboard__filters select {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 10px;
   background: var(--surface);
+  padding: 8px 10px;
   min-width: 220px;
 }
 
@@ -49,12 +47,10 @@
 }
 
 .collab-dashboard__state--error button {
-  border: 1px solid #e5b2ad;
-  border-radius: 8px;
+  border-color: #e5b2ad;
   padding: 6px 10px;
   background: #fff5f4;
   color: var(--danger);
-  cursor: pointer;
 }
 
 @media (max-width: 1100px) {

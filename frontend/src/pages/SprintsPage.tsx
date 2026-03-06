@@ -7,6 +7,7 @@ import { PageFrame } from "@/components/common/PageFrame";
 import { SprintFormModal } from "@/components/forms/SprintFormModal";
 import { SprintTable } from "@/components/tables/SprintTable";
 import { useCreateSprint, useSprints } from "@/hooks/useSprints";
+import { formatNumber } from "@/utils/format";
 
 import "./SprintsPage.css";
 
@@ -24,7 +25,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "object" && error !== null && "message" in error) {
     return String((error as { message: string }).message);
   }
-  return "Unexpected request error.";
+  return "Erro inesperado na requisicao.";
 }
 
 export function SprintsPage() {
@@ -80,27 +81,27 @@ export function SprintsPage() {
   }
 
   return (
-    <PageFrame title="Sprints" subtitle="Sprint management and quick links to dashboard views.">
+    <PageFrame title="Sprints" subtitle="Gestao de sprints com acesso rapido ao painel de metricas.">
       <div className="sprints-page">
         <div className="sprints-page__header">
           <div className="sprints-page__summary">
             <article>
-              <strong>{sprintsQuery.data?.total ?? 0}</strong>
-              <span>Total sprints</span>
+              <strong>{formatNumber(sprintsQuery.data?.total ?? 0)}</strong>
+              <span>Total de sprints</span>
             </article>
             <article>
-              <strong>{summary.loaded}</strong>
-              <span>Loaded in page</span>
+              <strong>{formatNumber(summary.loaded)}</strong>
+              <span>Carregadas na pagina</span>
             </article>
             <article>
-              <strong>{summary.avgTeamSize}</strong>
-              <span>Avg team size (loaded)</span>
+              <strong>{formatNumber(summary.avgTeamSize)}</strong>
+              <span>Media de pessoas (pagina)</span>
             </article>
           </div>
 
           <div className="sprints-page__actions">
             <label>
-              Rows
+              Linhas
               <select value={String(limit)} onChange={(event) => updateParams({ limit: Number(event.target.value) })}>
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -109,24 +110,24 @@ export function SprintsPage() {
             </label>
 
             <button onClick={() => setIsCreateOpen(true)} type="button">
-              Create sprint
+              Nova sprint
             </button>
           </div>
         </div>
 
-        {sprintsQuery.isLoading ? <p className="sprints-page__state">Loading sprints...</p> : null}
+        {sprintsQuery.isLoading ? <p className="sprints-page__state">Carregando sprints...</p> : null}
 
         {sprintsQuery.isError ? (
           <div className="sprints-page__state sprints-page__state--error">
             <p>{getErrorMessage(sprintsQuery.error)}</p>
             <button onClick={() => sprintsQuery.refetch()} type="button">
-              Retry
+              Tentar novamente
             </button>
           </div>
         ) : null}
 
         {!sprintsQuery.isLoading && !sprintsQuery.isError && sprintsQuery.data?.items.length === 0 ? (
-          <p className="sprints-page__state">No sprints found. Create your first sprint.</p>
+          <p className="sprints-page__state">Nenhuma sprint encontrada. Crie a primeira sprint.</p>
         ) : null}
 
         {!sprintsQuery.isLoading && !sprintsQuery.isError && sprintsQuery.data && sprintsQuery.data.items.length > 0 ? (

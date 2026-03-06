@@ -1,5 +1,6 @@
 import type { AssigneeSummary } from "@/api/metrics";
 import type { Collaborator } from "@/api/collaborators";
+import { formatNumber } from "@/utils/format";
 
 import "./AssigneeSummaryTable.css";
 
@@ -14,31 +15,31 @@ export function AssigneeSummaryTable({ rows, collaborators }: AssigneeSummaryTab
   return (
     <section className="assignee-summary">
       <header>
-        <h3>Summary by assignee</h3>
+        <h3>Resumo por responsavel</h3>
       </header>
       <div className="assignee-summary__table-wrap">
         <table className="assignee-summary__table">
           <thead>
             <tr>
-              <th>Assignee</th>
-              <th>Points done</th>
-              <th>Points open</th>
-              <th>Issues done</th>
-              <th>Issues open</th>
-              <th>Expected points</th>
-              <th>Min points</th>
+              <th>Responsavel</th>
+              <th>Pontos concluidos</th>
+              <th>Pontos em aberto</th>
+              <th>Issues concluidas</th>
+              <th>Issues em aberto</th>
+              <th>Pontos esperados</th>
+              <th>Pontos minimos</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row) => (
               <tr key={row.assignee_id}>
-                <td>{collaboratorMap.get(row.assignee_id) ?? `#${row.assignee_id}`}</td>
-                <td>{row.points_done}</td>
-                <td>{row.points_open}</td>
-                <td>{row.issues_done_count}</td>
-                <td>{row.issues_open_count}</td>
-                <td>{row.expected_points}</td>
-                <td>{row.min_points}</td>
+                <td>{collaboratorMap.get(row.assignee_id) ?? `#${formatNumber(row.assignee_id)}`}</td>
+                <td>{formatNumber(row.points_done)}</td>
+                <td>{formatNumber(row.points_open)}</td>
+                <td>{formatNumber(row.issues_done_count)}</td>
+                <td>{formatNumber(row.issues_open_count)}</td>
+                <td>{formatNumber(row.expected_points)}</td>
+                <td>{formatNumber(row.min_points)}</td>
               </tr>
             ))}
           </tbody>

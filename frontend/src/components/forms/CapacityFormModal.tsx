@@ -60,9 +60,9 @@ export function CapacityFormModal({
     <div className="capacity-modal__backdrop" role="presentation">
       <div aria-modal="true" className="capacity-modal" role="dialog">
         <header className="capacity-modal__header">
-          <h3>Create capacity</h3>
+          <h3>Nova capacidade</h3>
           <button onClick={onClose} type="button">
-            Close
+            Fechar
           </button>
         </header>
 
@@ -70,7 +70,7 @@ export function CapacityFormModal({
           <label>
             Sprint
             <select required value={sprintNumber} onChange={(event) => setSprintNumber(event.target.value)}>
-              <option value="">Select sprint</option>
+              <option value="">Selecione a sprint</option>
               {sprints.map((sprint) => (
                 <option key={sprint.sprint_number} value={String(sprint.sprint_number)}>
                   Sprint {sprint.sprint_number}
@@ -80,13 +80,13 @@ export function CapacityFormModal({
           </label>
 
           <label>
-            Collaborator
+            Colaborador
             <select
               required
               value={collaboratorId}
               onChange={(event) => setCollaboratorId(event.target.value)}
             >
-              <option value="">Select collaborator</option>
+              <option value="">Selecione o colaborador</option>
               {collaborators.map((collaborator) => (
                 <option key={collaborator.id} value={String(collaborator.id)}>
                   {collaborator.name}
@@ -96,7 +96,7 @@ export function CapacityFormModal({
           </label>
 
           <label>
-            Min points
+            Pontos minimos
             <input
               min={0}
               required
@@ -107,7 +107,7 @@ export function CapacityFormModal({
           </label>
 
           <label>
-            Expected points
+            Pontos esperados
             <input
               min={0}
               required
@@ -121,10 +121,10 @@ export function CapacityFormModal({
 
           <footer className="capacity-modal__footer">
             <button onClick={onClose} type="button">
-              Cancel
+              Cancelar
             </button>
             <button disabled={!isValid || isSubmitting} type="submit">
-              {isSubmitting ? "Saving..." : "Create"}
+              {isSubmitting ? "Salvando..." : "Criar"}
             </button>
           </footer>
         </form>

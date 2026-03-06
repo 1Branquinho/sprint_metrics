@@ -1,6 +1,6 @@
 .issue-filters {
   display: grid;
-  grid-template-columns: repeat(4, minmax(160px, 1fr)) auto;
+  grid-template-columns: repeat(4, minmax(170px, 1fr)) auto;
   gap: var(--space-3);
   align-items: end;
 }
@@ -8,27 +8,22 @@
 .issue-filters label {
   display: grid;
   gap: var(--space-1);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--muted);
 }
 
 .issue-filters select {
-  border: 1px solid var(--border);
-  border-radius: 8px;
   background: var(--surface);
-  padding: 8px 10px;
+  padding: 9px 11px;
 }
 
 .issue-filters__clear {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
+  background: var(--surface-alt);
+  padding: 9px 12px;
 }
 
 @media (max-width: 1100px) {
   .issue-filters {
-    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    grid-template-columns: repeat(2, minmax(170px, 1fr));
   }
 }

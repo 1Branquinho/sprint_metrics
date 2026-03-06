@@ -19,21 +19,21 @@
 
 .sprints-page__summary article {
   border: 1px solid var(--border);
-  background: #f8fbfd;
+  background: linear-gradient(180deg, #ffffff 0%, #f5fbff 100%);
   border-radius: 10px;
   padding: 10px 12px;
   display: grid;
   gap: 2px;
-  min-width: 140px;
+  min-width: 155px;
 }
 
 .sprints-page__summary strong {
-  font-size: 1.15rem;
+  font-size: 1.16rem;
 }
 
 .sprints-page__summary span {
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
 .sprints-page__actions {
@@ -45,23 +45,20 @@
 .sprints-page__actions label {
   display: grid;
   gap: var(--space-1);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--muted);
 }
 
 .sprints-page__actions select {
-  border: 1px solid var(--border);
-  border-radius: 8px;
   padding: 8px 10px;
 }
 
 .sprints-page__actions button {
-  border-radius: 8px;
-  border: 1px solid var(--accent-strong);
-  background: var(--accent);
+  border-color: var(--accent-strong);
+  background: linear-gradient(180deg, #0e8f9a 0%, var(--accent) 100%);
   color: #ffffff;
   padding: 8px 12px;
-  cursor: pointer;
+  font-weight: 600;
 }
 
 .sprints-page__state {
@@ -77,10 +74,8 @@
 }
 
 .sprints-page__state--error button {
-  border: 1px solid #e5b2ad;
-  border-radius: 8px;
+  border-color: #e5b2ad;
   padding: 6px 10px;
   background: #fff5f4;
   color: var(--danger);
-  cursor: pointer;
 }

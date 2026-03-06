@@ -2,6 +2,7 @@
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 12px;
+  background: #ffffff;
 }
 
 .issue-table {
@@ -13,25 +14,27 @@
 .issue-table th,
 .issue-table td {
   text-align: left;
-  padding: 10px 12px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border);
 }
 
+.issue-table tbody tr:hover {
+  background: #f6fafc;
+}
+
 .issue-table thead th {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .issue-table__status-cell {
   display: grid;
-  gap: 6px;
+  gap: 7px;
 }
 
 .issue-table__status-cell select {
-  border: 1px solid var(--border);
-  border-radius: 8px;
   padding: 6px 8px;
 }
 
@@ -45,15 +48,13 @@
 }
 
 .issue-table__actions button {
-  border: 1px solid var(--border);
   background: var(--surface);
-  border-radius: 8px;
   padding: 6px 10px;
   margin-left: 6px;
-  cursor: pointer;
 }
 
 .issue-table__actions .danger {
-  border-color: #f2b8b3;
+  border-color: #efbfba;
   color: var(--danger);
+  background: #fff8f7;
 }

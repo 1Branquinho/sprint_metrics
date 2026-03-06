@@ -13,6 +13,8 @@ import {
 } from "recharts";
 
 import type { StatusTotals } from "@/api/metrics";
+import { formatNumber } from "@/utils/format";
+import { issueStatusLabelFromUnknown } from "@/utils/status";
 
 import "./StatusBreakdownChart.css";
 
@@ -29,13 +31,17 @@ export function StatusBreakdownChart({
 }: StatusBreakdownChartProps) {
   const data = useMemo(() => {
     const source = mode === "points" ? totals.byPoints : totals.byCount;
-    return Object.entries(source).map(([status, value]) => ({ status, value }));
+    return Object.entries(source).map(([status, value]) => ({
+      status,
+      statusLabel: issueStatusLabelFromUnknown(status),
+      value,
+    }));
   }, [mode, totals.byCount, totals.byPoints]);
 
   return (
     <section className="status-breakdown">
       <header className="status-breakdown__header">
-        <h3>Status breakdown ({mode})</h3>
+        <h3>Distribuicao por status ({mode === "points" ? "pontos" : "itens"})</h3>
       </header>
 
       <div className="status-breakdown__charts status-breakdown__charts--single">
@@ -43,11 +49,11 @@ export function StatusBreakdownChart({
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#dde5ea" />
-              <XAxis dataKey="status" />
-              <YAxis />
-              <Tooltip />
+              <XAxis dataKey="statusLabel" />
+              <YAxis tickFormatter={formatNumber} />
+              <Tooltip formatter={(value) => formatNumber(Number(value))} />
               <Legend />
-              <Bar dataKey="value" name={mode === "points" ? "Points" : "Count"} fill="#1f8a70" />
+              <Bar dataKey="value" name={mode === "points" ? "Pontos" : "Quantidade"} fill="#0e7c86" />
             </BarChart>
           </ResponsiveContainer>
         ) : (
@@ -56,12 +62,12 @@ export function StatusBreakdownChart({
               <Pie
                 data={data}
                 dataKey="value"
-                nameKey="status"
+                nameKey="statusLabel"
                 outerRadius={95}
-                fill="#1f8a70"
-                label
+                fill="#0e7c86"
+                label={({ name, value }) => `${String(name ?? "")}: ${formatNumber(Number(value ?? 0))}`}
               />
-              <Tooltip />
+              <Tooltip formatter={(value) => formatNumber(Number(value))} />
             </PieChart>
           </ResponsiveContainer>
         )}

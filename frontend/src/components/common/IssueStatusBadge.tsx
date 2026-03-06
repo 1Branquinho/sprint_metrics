@@ -1,4 +1,5 @@
 import type { IssueStatus } from "@/api/issues";
+import { issueStatusLabel } from "@/utils/status";
 
 import "./IssueStatusBadge.css";
 
@@ -15,5 +16,5 @@ type IssueStatusBadgeProps = {
 };
 
 export function IssueStatusBadge({ status }: IssueStatusBadgeProps) {
-  return <span className={statusClassMap[status]}>{status}</span>;
+  return <span className={statusClassMap[status]}>{issueStatusLabel(status)}</span>;
 }

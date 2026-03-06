@@ -1,6 +1,6 @@
 .chart-card {
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
   border-radius: 12px;
   padding: var(--space-4);
 }

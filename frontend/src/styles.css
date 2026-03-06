@@ -1,14 +1,17 @@
 :root {
-  --bg: #f4f6f8;
+  --bg: #eaf0f3;
   --surface: #ffffff;
-  --surface-strong: #0e2a3a;
-  --text: #12212b;
-  --muted: #62717c;
-  --accent: #1f8a70;
-  --accent-strong: #155b4a;
-  --border: #d9e0e5;
-  --danger: #c0392b;
-  --radius: 12px;
+  --surface-alt: #f6fafc;
+  --surface-strong: #123247;
+  --text: #152431;
+  --muted: #5f7280;
+  --accent: #0e7c86;
+  --accent-strong: #0c5f66;
+  --border: #d7e1e8;
+  --danger: #bf3e31;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow-soft: 0 10px 26px rgba(19, 48, 67, 0.08);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -30,7 +33,9 @@ body,
 
 body {
   font-family: "Segoe UI", "Noto Sans", sans-serif;
-  background: radial-gradient(circle at top left, #f9fcfe 0, var(--bg) 45%, #eef3f6 100%);
+  background:
+    radial-gradient(circle at 15% 10%, #fefefe 0, #f3f8fb 28%, transparent 60%),
+    linear-gradient(180deg, #f4f8fb 0%, var(--bg) 100%);
   color: var(--text);
 }
 
@@ -43,4 +48,34 @@ button,
 input,
 select {
   font: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: #b7c7d2;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.16);
 }

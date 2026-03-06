@@ -14,11 +14,8 @@
 }
 
 .sprint-dashboard__widget-actions button {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
+  background: var(--surface-alt);
   padding: 8px 12px;
-  cursor: pointer;
 }
 
 .sprint-dashboard__kpis {
@@ -46,12 +43,10 @@
 }
 
 .sprint-dashboard__state--error button {
-  border: 1px solid #e5b2ad;
-  border-radius: 8px;
+  border-color: #e5b2ad;
   padding: 6px 10px;
   background: #fff5f4;
   color: var(--danger);
-  cursor: pointer;
 }
 
 @media (max-width: 1100px) {

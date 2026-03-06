@@ -11,10 +11,11 @@ import type { Issue, IssueCreateInput, IssueStatus, IssueUpdateInput } from "@/a
 import { useCollaborators } from "@/hooks/useCollaborators";
 import { useCreateIssue, useDeleteIssue, useIssues, useUpdateIssue } from "@/hooks/useIssues";
 import { useSprints } from "@/hooks/useSprints";
+import { issueStatusOptions } from "@/utils/status";
 
 import "./IssuesPage.css";
 
-const statusValues: IssueStatus[] = ["TODO", "DOING", "CODE REVIEW", "TESTING", "DONE"];
+const statusValues: IssueStatus[] = issueStatusOptions;
 
 function toPositiveInt(value: string | null, fallback: number): number {
   const parsed = Number(value);
@@ -30,7 +31,7 @@ function getErrorMessage(error: unknown): string {
   if (typeof error === "object" && error !== null && "message" in error) {
     return String((error as ApiError).message);
   }
-  return "Unexpected request error.";
+  return "Erro inesperado na requisicao.";
 }
 
 export function IssuesPage() {
@@ -130,7 +131,7 @@ export function IssuesPage() {
   }
 
   async function handleDeleteIssue(issue: Issue) {
-    const confirmed = window.confirm(`Delete ${issue.issue_number}?`);
+    const confirmed = window.confirm(`Excluir ${issue.issue_number}?`);
     if (!confirmed) {
       return;
     }
@@ -160,7 +161,7 @@ export function IssuesPage() {
   return (
     <PageFrame
       title="Issues"
-      subtitle="Operational queue with filters, pagination and status transitions."
+      subtitle="Fila operacional com filtros, paginacao e transicao de status."
     >
       <div className="issues-page">
         <div className="issues-page__toolbar">
@@ -181,23 +182,23 @@ export function IssuesPage() {
           />
 
           <button className="issues-page__create" onClick={openCreateModal} type="button">
-            Create issue
+            Nova issue
           </button>
         </div>
 
-        {isLoading ? <p className="issues-page__state">Loading issues...</p> : null}
+        {isLoading ? <p className="issues-page__state">Carregando issues...</p> : null}
 
         {issuesQuery.isError ? (
           <div className="issues-page__state issues-page__state--error">
             <p>{getErrorMessage(issuesQuery.error)}</p>
             <button onClick={() => issuesQuery.refetch()} type="button">
-              Retry
+              Tentar novamente
             </button>
           </div>
         ) : null}
 
         {!isLoading && !issuesQuery.isError && pageData && pageData.items.length === 0 ? (
-          <p className="issues-page__state">No issues found for the selected filters.</p>
+          <p className="issues-page__state">Nenhuma issue encontrada para os filtros selecionados.</p>
         ) : null}
 
         {!isLoading && !issuesQuery.isError && pageData && pageData.items.length > 0 ? (

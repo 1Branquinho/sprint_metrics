@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Collaborator } from "@/api/collaborators";
 import type { Issue, IssueCreateInput, IssueStatus, IssueUpdateInput } from "@/api/issues";
 import type { Sprint } from "@/api/sprints";
+import { issueStatusLabel, issueStatusOptions } from "@/utils/status";
 
 import "./IssueFormModal.css";
 
@@ -29,8 +30,6 @@ type FormState = {
   created_at: string;
   work_day: string;
 };
-
-const statusOptions: IssueStatus[] = ["TODO", "DOING", "CODE REVIEW", "TESTING", "DONE"];
 
 function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
@@ -124,9 +123,9 @@ export function IssueFormModal({
     <div className="issue-modal__backdrop" role="presentation">
       <div aria-modal="true" className="issue-modal" role="dialog">
         <header className="issue-modal__header">
-          <h3>{mode === "create" ? "Create issue" : `Edit issue #${issue?.id}`}</h3>
+          <h3>{mode === "create" ? "Nova issue" : `Editar issue #${issue?.id}`}</h3>
           <button onClick={onClose} type="button">
-            Close
+            Fechar
           </button>
         </header>
 
@@ -138,7 +137,7 @@ export function IssueFormModal({
               value={form.sprint_number}
               onChange={(event) => handleFieldChange("sprint_number", event.target.value)}
             >
-              <option value="">Select sprint</option>
+              <option value="">Selecione a sprint</option>
               {sprints.map((sprint) => (
                 <option key={sprint.sprint_number} value={String(sprint.sprint_number)}>
                   Sprint {sprint.sprint_number}
@@ -148,7 +147,7 @@ export function IssueFormModal({
           </label>
 
           <label>
-            Issue number
+            Numero da issue
             <input
               required
               value={form.issue_number}
@@ -158,17 +157,17 @@ export function IssueFormModal({
           </label>
 
           <label>
-            Title
+            Titulo
             <input
               required
               value={form.title}
               onChange={(event) => handleFieldChange("title", event.target.value)}
-              placeholder="Describe work item"
+              placeholder="Descreva o item de trabalho"
             />
           </label>
 
           <label>
-            GitLab URL
+            URL do GitLab
             <input
               value={form.gitlab_url}
               onChange={(event) => handleFieldChange("gitlab_url", event.target.value)}
@@ -188,13 +187,13 @@ export function IssueFormModal({
           </label>
 
           <label>
-            Assignee
+            Responsavel
             <select
               required
               value={form.assignee_id}
               onChange={(event) => handleFieldChange("assignee_id", event.target.value)}
             >
-              <option value="">Select assignee</option>
+              <option value="">Selecione o responsavel</option>
               {collaborators.map((collaborator) => (
                 <option key={collaborator.id} value={String(collaborator.id)}>
                   {collaborator.name}
@@ -206,16 +205,16 @@ export function IssueFormModal({
           <label>
             Status
             <select value={form.status} onChange={(event) => handleFieldChange("status", event.target.value as IssueStatus)}>
-              {statusOptions.map((status) => (
+              {issueStatusOptions.map((status) => (
                 <option key={status} value={status}>
-                  {status}
+                  {issueStatusLabel(status)}
                 </option>
               ))}
             </select>
           </label>
 
           <label>
-            Created at
+            Criada em
             <input
               required
               type="date"
@@ -225,7 +224,7 @@ export function IssueFormModal({
           </label>
 
           <label>
-            Work day
+            Dia de trabalho
             <input
               required
               type="date"
@@ -238,10 +237,10 @@ export function IssueFormModal({
 
           <footer className="issue-modal__footer">
             <button onClick={onClose} type="button">
-              Cancel
+              Cancelar
             </button>
             <button disabled={!isValid || isSubmitting} type="submit">
-              {isSubmitting ? "Saving..." : mode === "create" ? "Create" : "Save"}
+              {isSubmitting ? "Salvando..." : mode === "create" ? "Criar" : "Salvar"}
             </button>
           </footer>
         </form>

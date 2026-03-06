@@ -5,19 +5,21 @@
 
 .page-frame__header h1 {
   margin: 0;
-  font-size: 1.5rem;
-  line-height: 1.2;
+  font-size: 1.56rem;
+  line-height: 1.15;
 }
 
 .page-frame__header p {
   margin: var(--space-2) 0 0;
   color: var(--muted);
+  max-width: 880px;
 }
 
 .page-frame__body {
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
   border-radius: var(--radius);
-  padding: var(--space-5);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(16px, 2.1vw, 26px);
   min-height: 220px;
 }

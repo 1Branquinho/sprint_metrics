@@ -1,5 +1,6 @@
 import type { Capacity } from "@/api/capacities";
 import type { Collaborator } from "@/api/collaborators";
+import { formatNumber } from "@/utils/format";
 
 import "./CapacityTable.css";
 
@@ -17,18 +18,20 @@ export function CapacityTable({ capacities, collaborators }: CapacityTableProps)
         <thead>
           <tr>
             <th>Sprint</th>
-            <th>Collaborator</th>
-            <th>Min points</th>
-            <th>Expected points</th>
+            <th>Colaborador</th>
+            <th>Pontos minimos</th>
+            <th>Pontos esperados</th>
           </tr>
         </thead>
         <tbody>
           {capacities.map((capacity) => (
             <tr key={capacity.id}>
-              <td>#{capacity.sprint_number}</td>
-              <td>{collaboratorMap.get(capacity.collaborator_id) ?? `#${capacity.collaborator_id}`}</td>
-              <td>{capacity.min_points}</td>
-              <td>{capacity.expected_points}</td>
+              <td>#{formatNumber(capacity.sprint_number)}</td>
+              <td>
+                {collaboratorMap.get(capacity.collaborator_id) ?? `#${formatNumber(capacity.collaborator_id)}`}
+              </td>
+              <td>{formatNumber(capacity.min_points)}</td>
+              <td>{formatNumber(capacity.expected_points)}</td>
             </tr>
           ))}
         </tbody>

@@ -16,7 +16,7 @@ export function SprintSelector({ sprintNumber, sprints, onChange }: SprintSelect
         value={sprintNumber === null ? "" : String(sprintNumber)}
         onChange={(event) => onChange(Number(event.target.value))}
       >
-        {sprints.length === 0 ? <option value="">No sprints available</option> : null}
+        {sprints.length === 0 ? <option value="">Sem sprints disponiveis</option> : null}
         {sprints.map((sprint) => (
           <option key={sprint.sprint_number} value={String(sprint.sprint_number)}>
             Sprint {sprint.sprint_number}

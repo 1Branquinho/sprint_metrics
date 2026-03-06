@@ -2,6 +2,7 @@
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 12px;
+  background: #ffffff;
 }
 
 .capacity-table {
@@ -13,13 +14,17 @@
 .capacity-table th,
 .capacity-table td {
   text-align: left;
-  padding: 10px 12px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border);
 }
 
+.capacity-table tbody tr:hover {
+  background: #f6fafc;
+}
+
 .capacity-table thead th {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }

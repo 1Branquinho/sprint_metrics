@@ -1,0 +1,59 @@
+.issue-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.issue-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1080px;
+}
+
+.issue-table th,
+.issue-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.issue-table thead th {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.issue-table__status-cell {
+  display: grid;
+  gap: 6px;
+}
+
+.issue-table__status-cell select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.issue-table__actions-header,
+.issue-table__actions {
+  text-align: right;
+}
+
+.issue-table__actions {
+  white-space: nowrap;
+}
+
+.issue-table__actions button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.issue-table__actions .danger {
+  border-color: #f2b8b3;
+  color: var(--danger);
+}

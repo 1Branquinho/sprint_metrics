@@ -1,0 +1,35 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.status-badge--todo {
+  background: #ecf0f3;
+  color: #4c5963;
+}
+
+.status-badge--doing {
+  background: #d7ecff;
+  color: #1f5b8f;
+}
+
+.status-badge--review {
+  background: #efe3ff;
+  color: #6741a3;
+}
+
+.status-badge--testing {
+  background: #fff2d6;
+  color: #9a6a0f;
+}
+
+.status-badge--done {
+  background: #d8f3e9;
+  color: #1d6f52;
+}

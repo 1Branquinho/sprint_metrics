@@ -1,0 +1,88 @@
+.collaborator-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  z-index: 1000;
+}
+
+.collaborator-modal {
+  width: min(520px, 100%);
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.collaborator-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.collaborator-modal__header h3 {
+  margin: 0;
+}
+
+.collaborator-modal__header button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.collaborator-modal__form {
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.collaborator-modal__form label {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.collaborator-modal__form input[type="text"],
+.collaborator-modal__form input:not([type]) {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.collaborator-modal__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.92rem;
+}
+
+.collaborator-modal__error {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.collaborator-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.collaborator-modal__footer button {
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.collaborator-modal__footer button[type="submit"] {
+  background: var(--accent);
+  border-color: var(--accent-strong);
+  color: #ffffff;
+}

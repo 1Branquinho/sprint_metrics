@@ -1,0 +1,15 @@
+.chart-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: var(--space-4);
+}
+
+.chart-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.chart-card__body {
+  margin-top: var(--space-3);
+}

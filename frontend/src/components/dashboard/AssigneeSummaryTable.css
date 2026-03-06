@@ -1,0 +1,36 @@
+.assignee-summary {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: var(--space-4);
+}
+
+.assignee-summary h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.assignee-summary__table-wrap {
+  margin-top: var(--space-3);
+  overflow-x: auto;
+}
+
+.assignee-summary__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.assignee-summary__table th,
+.assignee-summary__table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.assignee-summary__table th {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

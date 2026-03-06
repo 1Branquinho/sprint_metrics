@@ -1,0 +1,25 @@
+.capacity-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.capacity-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.capacity-table th,
+.capacity-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.capacity-table thead th {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

@@ -1,8 +1,16 @@
 import type { Page } from "@/types/common";
+
 import { request } from "./client";
 
 export type Capacity = {
   id: number;
+  sprint_number: number;
+  collaborator_id: number;
+  min_points: number;
+  expected_points: number;
+};
+
+export type CapacityCreateInput = {
   sprint_number: number;
   collaborator_id: number;
   min_points: number;
@@ -16,4 +24,8 @@ export function listCapacities(params: {
   offset?: number;
 }): Promise<Page<Capacity>> {
   return request<Page<Capacity>>("/capacities", { query: params });
+}
+
+export function createCapacity(payload: CapacityCreateInput): Promise<Capacity> {
+  return request<Capacity>("/capacities", { method: "POST", body: payload });
 }

@@ -13,7 +13,8 @@
     "@tanstack/react-query": "^5.90.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "react-router-dom": "^7.9.6",
+    "recharts": "^3.7.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",

@@ -1,0 +1,28 @@
+.metric-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.metric-card span {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.metric-card strong {
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+.metric-card--success {
+  border-color: #b7e3d2;
+  background: #f3fcf8;
+}
+
+.metric-card--warning {
+  border-color: #efdfb7;
+  background: #fffaf0;
+}

@@ -1,4 +1,5 @@
 import type { Page } from "@/types/common";
+
 import { request } from "./client";
 
 export type Collaborator = {
@@ -7,6 +8,15 @@ export type Collaborator = {
   active: boolean;
 };
 
+export type CollaboratorCreateInput = {
+  name: string;
+  active: boolean;
+};
+
 export function listCollaborators(active?: boolean, limit = 50, offset = 0): Promise<Page<Collaborator>> {
   return request<Page<Collaborator>>("/collaborators", { query: { active, limit, offset } });
+}
+
+export function createCollaborator(payload: CollaboratorCreateInput): Promise<Collaborator> {
+  return request<Collaborator>("/collaborators", { method: "POST", body: payload });
 }

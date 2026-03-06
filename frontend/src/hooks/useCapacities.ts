@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { listCapacities } from "@/api/capacities";
+import { createCapacity, listCapacities, type CapacityCreateInput } from "@/api/capacities";
 import { queryKeys } from "@/api/queryKeys";
 
 export function useCapacities(params: {
@@ -12,5 +12,17 @@ export function useCapacities(params: {
   return useQuery({
     queryKey: queryKeys.capacities(params),
     queryFn: () => listCapacities(params),
+  });
+}
+
+export function useCreateCapacity() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: CapacityCreateInput) => createCapacity(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["capacities"] });
+      queryClient.invalidateQueries({ queryKey: ["sprintMetrics"] });
+    },
   });
 }

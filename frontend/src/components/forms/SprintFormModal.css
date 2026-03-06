@@ -1,0 +1,97 @@
+.sprint-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  z-index: 1000;
+}
+
+.sprint-modal {
+  width: min(760px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.sprint-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.sprint-modal__header h3 {
+  margin: 0;
+}
+
+.sprint-modal__header button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.sprint-modal__form {
+  padding: var(--space-4);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.sprint-modal__form label {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.sprint-modal__form input,
+.sprint-modal__form textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.sprint-modal__notes {
+  grid-column: 1 / -1;
+}
+
+.sprint-modal__error {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.sprint-modal__footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.sprint-modal__footer button {
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.sprint-modal__footer button[type="submit"] {
+  background: var(--accent);
+  border-color: var(--accent-strong);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .sprint-modal__form {
+    grid-template-columns: 1fr;
+  }
+}

@@ -39,7 +39,7 @@ jobs:
 
       - name: Mypy (app)
         working-directory: backend
-        run: python -m mypy --config-file mypy.ini app
+        run: python -m mypy --config-file mypy.ini -p app
 
   test:
     runs-on: ubuntu-latest

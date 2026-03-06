@@ -3,13 +3,16 @@ import { useSearchParams } from "react-router-dom";
 
 import { BurndownChart } from "@/components/charts/BurndownChart";
 import { StatusBreakdownChart } from "@/components/charts/StatusBreakdownChart";
-import { MetricCard } from "@/components/dashboard/MetricCard";
-import { AssigneeSummaryTable } from "@/components/dashboard/AssigneeSummaryTable";
-import { SprintSelector } from "@/components/dashboard/SprintSelector";
 import { PageFrame } from "@/components/common/PageFrame";
+import { AssigneeSummaryTable } from "@/components/dashboard/AssigneeSummaryTable";
+import { MetricCard } from "@/components/dashboard/MetricCard";
+import { SprintSelector } from "@/components/dashboard/SprintSelector";
+import { WidgetConfigPanel } from "@/components/widgets/WidgetConfigPanel";
 import { useCollaborators } from "@/hooks/useCollaborators";
 import { useSprintMetrics } from "@/hooks/useSprintMetrics";
 import { useSprints } from "@/hooks/useSprints";
+import { useSprintWidgets } from "@/hooks/useSprintWidgets";
+import type { SprintWidgetConfig } from "@/types/widgets";
 
 import "./SprintDashboardPage.css";
 
@@ -30,6 +33,9 @@ export function SprintDashboardPage() {
 
   const sprintsQuery = useSprints(200, 0);
   const collaboratorsQuery = useCollaborators(undefined, 500, 0);
+  const metricsQuery = useSprintMetrics(selectedSprint);
+
+  const { widgets, update, reset } = useSprintWidgets();
 
   useEffect(() => {
     if (selectedSprint !== null) {
@@ -44,7 +50,38 @@ export function SprintDashboardPage() {
     setSearchParams({ sprint_number: String(firstSprint.sprint_number) }, { replace: true });
   }, [selectedSprint, setSearchParams, sprintsQuery.data?.items]);
 
-  const metricsQuery = useSprintMetrics(selectedSprint);
+  function renderWidget(widget: SprintWidgetConfig) {
+    if (!metricsQuery.data || !widget.enabled) {
+      return null;
+    }
+
+    if (widget.id === "burndown") {
+      return <BurndownChart key={widget.id} series={metricsQuery.data.burndownSeries} />;
+    }
+
+    if (widget.id === "status_breakdown") {
+      return (
+        <StatusBreakdownChart
+          key={widget.id}
+          totals={metricsQuery.data.statusTotals}
+          mode={widget.metricMode}
+          chartType={widget.chartType === "pie" ? "pie" : "bar"}
+        />
+      );
+    }
+
+    if (widget.id === "assignee_summary") {
+      return (
+        <AssigneeSummaryTable
+          key={widget.id}
+          rows={metricsQuery.data.perAssigneeSummary}
+          collaborators={collaboratorsQuery.data?.items ?? []}
+        />
+      );
+    }
+
+    return null;
+  }
 
   return (
     <PageFrame title="Sprint Dashboard" subtitle="Consolidated sprint execution KPIs and burndown.">
@@ -53,8 +90,17 @@ export function SprintDashboardPage() {
           <SprintSelector
             sprintNumber={selectedSprint}
             sprints={sprintsQuery.data?.items ?? []}
-            onChange={(sprintNumber) => setSearchParams({ sprint_number: String(sprintNumber) }, { replace: true })}
+            onChange={(sprintNumber) =>
+              setSearchParams({ sprint_number: String(sprintNumber) }, { replace: true })
+            }
           />
+        </div>
+
+        <WidgetConfigPanel widgets={widgets} onChange={update} />
+        <div className="sprint-dashboard__widget-actions">
+          <button onClick={reset} type="button">
+            Reset widget defaults
+          </button>
         </div>
 
         {metricsQuery.isLoading || sprintsQuery.isLoading ? (
@@ -106,14 +152,7 @@ export function SprintDashboardPage() {
               ))}
             </section>
 
-            <BurndownChart series={metricsQuery.data.burndownSeries} />
-
-            <StatusBreakdownChart totals={metricsQuery.data.statusTotals} />
-
-            <AssigneeSummaryTable
-              rows={metricsQuery.data.perAssigneeSummary}
-              collaborators={collaboratorsQuery.data?.items ?? []}
-            />
+            {widgets.map((widget) => renderWidget(widget))}
           </>
         ) : null}
       </div>

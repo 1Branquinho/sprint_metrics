@@ -3,10 +3,28 @@ from datetime import date, timedelta
 from app.core.enums import IssueStatus
 
 
-def _safe_int(value: object) -> int:
+def _safe_int(value: object | None) -> int:
     if value is None:
         return 0
-    return int(value)
+
+    if isinstance(value, bool):
+        return int(value)
+
+    if isinstance(value, (int, float, str)):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return 0
+
+    return 0
+
+
+def _pick_row_date(row: dict[str, object], keys: tuple[str, ...]) -> date | None:
+    for key in keys:
+        value = row.get(key)
+        if isinstance(value, date):
+            return value
+    return None
 
 
 def _build_date_range(start: date, end: date) -> list[date]:
@@ -20,10 +38,10 @@ def _build_date_range(start: date, end: date) -> list[date]:
 
 def compute_collaborator_metrics(
     collaborator_id: int,
-    issues_rows: list[dict],
-    sprint_row: dict | None,
-    capacities_rows: list[dict],
-) -> dict:
+    issues_rows: list[dict[str, object]],
+    sprint_row: dict[str, object] | None,
+    capacities_rows: list[dict[str, object]],
+) -> dict[str, object]:
     status_order = [s.value for s in IssueStatus]
 
     total_points = sum(_safe_int(row.get("story_points")) for row in issues_rows)
@@ -44,7 +62,7 @@ def compute_collaborator_metrics(
 
         created_at = row.get("created_at")
         done_at = row.get("done_at")
-        if created_at is None or done_at is None:
+        if not isinstance(created_at, date) or not isinstance(done_at, date):
             continue
 
         lead_times.append((done_at - created_at).days)
@@ -52,9 +70,7 @@ def compute_collaborator_metrics(
     lead_time_days_avg = round(sum(lead_times) / len(lead_times), 2) if lead_times else None
 
     status_points = {
-        status: sum(
-            _safe_int(row.get("story_points")) for row in issues_rows if row.get("status") == status
-        )
+        status: sum(_safe_int(row.get("story_points")) for row in issues_rows if row.get("status") == status)
         for status in status_order
     }
     status_counts = {
@@ -65,20 +81,40 @@ def compute_collaborator_metrics(
     min_points = sum(_safe_int(row.get("min_points")) for row in capacities_rows)
 
     if sprint_row is not None:
-        start_date = sprint_row["start_date"]
-        end_date = sprint_row["end_date"]
-        sprint_number = _safe_int(sprint_row["sprint_number"])
+        start_candidate = sprint_row.get("start_date")
+        end_candidate = sprint_row.get("end_date")
+
+        if isinstance(start_candidate, date) and isinstance(end_candidate, date):
+            start_date = start_candidate
+            end_date = end_candidate
+        else:
+            today = date.today()
+            start_date = today
+            end_date = today
+
+        sprint_number = _safe_int(sprint_row.get("sprint_number"))
     elif issues_rows:
-        date_candidates_start = [
-            row.get("work_day") or row.get("created_at") for row in issues_rows if row.get("work_day") or row.get("created_at")
-        ]
-        date_candidates_end = [
-            row.get("done_at") or row.get("work_day") or row.get("created_at")
-            for row in issues_rows
-            if row.get("done_at") or row.get("work_day") or row.get("created_at")
-        ]
-        start_date = min(date_candidates_start)
-        end_date = max(date_candidates_end)
+        date_candidates_start: list[date] = []
+        date_candidates_end: list[date] = []
+
+        for row in issues_rows:
+            start_pick = _pick_row_date(row, ("work_day", "created_at"))
+            end_pick = _pick_row_date(row, ("done_at", "work_day", "created_at"))
+
+            if start_pick is not None:
+                date_candidates_start.append(start_pick)
+
+            if end_pick is not None:
+                date_candidates_end.append(end_pick)
+
+        if date_candidates_start and date_candidates_end:
+            start_date = min(date_candidates_start)
+            end_date = max(date_candidates_end)
+        else:
+            today = date.today()
+            start_date = today
+            end_date = today
+
         sprint_number = None
     else:
         today = date.today()

@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import type { ApiError } from "@/types/common";
 import { PageFrame } from "@/components/common/PageFrame";
 import { Pagination } from "@/components/common/Pagination";
+import { useToast } from "@/components/common/ToastProvider";
 import { IssueFilters } from "@/components/forms/IssueFilters";
 import { IssueFormModal } from "@/components/forms/IssueFormModal";
 import { IssueTable } from "@/components/tables/IssueTable";
@@ -36,6 +37,7 @@ function getErrorMessage(error: unknown): string {
 
 export function IssuesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const toast = useToast();
 
   const sprintNumberParam = searchParams.get("sprint_number") ?? "";
   const assigneeIdParam = searchParams.get("assignee_id") ?? "";
@@ -118,16 +120,22 @@ export function IssuesPage() {
       return;
     }
 
-    if (modalState.mode === "create") {
-      await createIssueMutation.mutateAsync(payload as IssueCreateInput);
-    } else if (modalState.issue) {
-      await updateIssueMutation.mutateAsync({
-        issueId: modalState.issue.id,
-        payload,
-      });
-    }
+    try {
+      if (modalState.mode === "create") {
+        await createIssueMutation.mutateAsync(payload as IssueCreateInput);
+        toast.success("Issue criada com sucesso.");
+      } else if (modalState.issue) {
+        await updateIssueMutation.mutateAsync({
+          issueId: modalState.issue.id,
+          payload,
+        });
+        toast.success("Issue atualizada com sucesso.");
+      }
 
-    closeModal();
+      closeModal();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   async function handleDeleteIssue(issue: Issue) {
@@ -136,7 +144,12 @@ export function IssuesPage() {
       return;
     }
 
-    await deleteIssueMutation.mutateAsync(issue.id);
+    try {
+      await deleteIssueMutation.mutateAsync(issue.id);
+      toast.success("Issue excluida com sucesso.");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   async function handleStatusChange(issue: Issue, nextStatus: IssueStatus) {
@@ -150,6 +163,9 @@ export function IssuesPage() {
         issueId: issue.id,
         payload: { status: nextStatus },
       });
+      toast.success(`Status da issue ${issue.issue_number} atualizado.`);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     } finally {
       setStatusUpdatingId(null);
     }

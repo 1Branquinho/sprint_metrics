@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import type { CapacityCreateInput } from "@/api/capacities";
 import { Pagination } from "@/components/common/Pagination";
 import { PageFrame } from "@/components/common/PageFrame";
+import { useToast } from "@/components/common/ToastProvider";
 import { CapacityFilters } from "@/components/forms/CapacityFilters";
 import { CapacityFormModal } from "@/components/forms/CapacityFormModal";
 import { CapacityTable } from "@/components/tables/CapacityTable";
@@ -33,6 +34,7 @@ function getErrorMessage(error: unknown): string {
 export function CapacitiesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const toast = useToast();
 
   const sprintNumberParam = searchParams.get("sprint_number") ?? "";
   const collaboratorIdParam = searchParams.get("collaborator_id") ?? "";
@@ -71,8 +73,13 @@ export function CapacitiesPage() {
   }
 
   async function handleCreateCapacity(payload: CapacityCreateInput) {
-    await createCapacityMutation.mutateAsync(payload);
-    setIsCreateOpen(false);
+    try {
+      await createCapacityMutation.mutateAsync(payload);
+      setIsCreateOpen(false);
+      toast.success("Capacidade criada com sucesso.");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   const isLoading = capacitiesQuery.isLoading || sprintsQuery.isLoading || collaboratorsQuery.isLoading;

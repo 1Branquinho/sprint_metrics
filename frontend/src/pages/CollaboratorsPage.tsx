@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { Pagination } from "@/components/common/Pagination";
 import { PageFrame } from "@/components/common/PageFrame";
+import { useToast } from "@/components/common/ToastProvider";
 import { CollaboratorFormModal } from "@/components/forms/CollaboratorFormModal";
 import { CollaboratorTable } from "@/components/tables/CollaboratorTable";
 import { useCollaborators, useCreateCollaborator } from "@/hooks/useCollaborators";
@@ -39,6 +40,7 @@ function getErrorMessage(error: unknown): string {
 export function CollaboratorsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const toast = useToast();
 
   const active = parseActive(searchParams.get("active"));
   const limit = toPositiveInt(searchParams.get("limit"), 20);
@@ -69,8 +71,13 @@ export function CollaboratorsPage() {
   }
 
   async function handleCreateCollaborator(payload: { name: string; active: boolean }) {
-    await createCollaboratorMutation.mutateAsync(payload);
-    setIsCreateOpen(false);
+    try {
+      await createCollaboratorMutation.mutateAsync(payload);
+      setIsCreateOpen(false);
+      toast.success("Colaborador criado com sucesso.");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   return (

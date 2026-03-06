@@ -25,6 +25,32 @@ function buildUrl(path: string, query?: RequestOptions["query"]): string {
   return url.toString();
 }
 
+function extractErrorMessage(body: unknown, fallback: string): string {
+  if (!body || typeof body !== "object") {
+    return fallback;
+  }
+
+  if ("detail" in body) {
+    const detail = (body as { detail?: unknown }).detail;
+    if (typeof detail === "string") {
+      return detail;
+    }
+
+    if (Array.isArray(detail)) {
+      const first = detail[0] as { msg?: string } | undefined;
+      if (first?.msg) {
+        return first.msg;
+      }
+    }
+  }
+
+  if ("message" in body && typeof (body as { message?: unknown }).message === "string") {
+    return String((body as { message: string }).message);
+  }
+
+  return fallback;
+}
+
 async function parseResponse<T>(response: Response): Promise<T> {
   if (response.ok) {
     if (response.status === 204) {
@@ -33,14 +59,14 @@ async function parseResponse<T>(response: Response): Promise<T> {
     return (await response.json()) as T;
   }
 
-  let message = `Request failed with status ${response.status}`;
+  const fallbackMessage = `Requisicao falhou (status ${response.status})`;
+  let message = fallbackMessage;
+
   try {
-    const errorBody = (await response.json()) as { detail?: string };
-    if (errorBody?.detail) {
-      message = errorBody.detail;
-    }
+    const errorBody = await response.json();
+    message = extractErrorMessage(errorBody, fallbackMessage);
   } catch {
-    // Ignore body parsing errors and keep fallback message.
+    message = fallbackMessage;
   }
 
   const error: ApiError = {

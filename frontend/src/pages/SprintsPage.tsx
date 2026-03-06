@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import type { SprintCreateInput } from "@/api/sprints";
 import { Pagination } from "@/components/common/Pagination";
 import { PageFrame } from "@/components/common/PageFrame";
+import { useToast } from "@/components/common/ToastProvider";
 import { SprintFormModal } from "@/components/forms/SprintFormModal";
 import { SprintTable } from "@/components/tables/SprintTable";
 import { useCreateSprint, useSprints } from "@/hooks/useSprints";
@@ -31,6 +32,7 @@ function getErrorMessage(error: unknown): string {
 export function SprintsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const toast = useToast();
 
   const limit = toPositiveInt(searchParams.get("limit"), 20);
   const offset = toNonNegativeInt(searchParams.get("offset"), 0);
@@ -76,8 +78,13 @@ export function SprintsPage() {
   }
 
   async function handleCreateSprint(payload: SprintCreateInput) {
-    await createSprintMutation.mutateAsync(payload);
-    setIsCreateOpen(false);
+    try {
+      await createSprintMutation.mutateAsync(payload);
+      setIsCreateOpen(false);
+      toast.success("Sprint criada com sucesso.");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
 
   return (

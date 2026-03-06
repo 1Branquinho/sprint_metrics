@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 import pandas as pd
+from app.core.enums import IssueStatus
 
 def compute_sprint_metrics(
     sprint_row: dict,
@@ -21,11 +22,12 @@ def compute_sprint_metrics(
 
     issues_df["story_points"] = pd.to_numeric(issues_df["story_points"], errors="coerce").fillna(0).astype(int)
 
-    total_story_points = int(issues_df["story_points"].sum())
-    done_story_points = int(issues_df.loc[issues_df["status"] == "DONE", "story_points"].sum())
-    open_story_points = int(issues_df.loc[issues_df["status"] != "DONE", "story_points"].sum())
+    status_order = [s.value for s in IssueStatus]
 
-    status_order = ["TODO", "DOING", "QA", "DONE"]
+    total_story_points = int(issues_df["story_points"].sum())
+    done_story_points = int(issues_df.loc[issues_df["status"] == IssueStatus.DONE, "story_points"].sum())
+    open_story_points = int(issues_df.loc[issues_df["status"] != IssueStatus.DONE, "story_points"].sum())
+
     status_points = {s: int(issues_df.loc[issues_df["status"] == s, "story_points"].sum()) for s in status_order}
     status_counts = {s: int((issues_df["status"] == s).sum()) for s in status_order}
 
@@ -71,10 +73,10 @@ def compute_sprint_metrics(
     per_assignee = []
     if not issues_df.empty:
         base = issues_df.groupby("assignee_id").agg(
-            issues_done_count=("status", lambda s: int((s == "DONE").sum())),
-            issues_open_count=("status", lambda s: int((s != "DONE").sum())),
-            points_done=("story_points", lambda sp: int(sp.loc[issues_df["status"] == "DONE"].sum())),
-            points_open=("story_points", lambda sp: int(sp.loc[issues_df["status"] != "DONE"].sum())),
+            issues_done_count=("status", lambda s: int((s == IssueStatus.DONE).sum())),
+            issues_open_count=("status", lambda s: int((s != IssueStatus.DONE).sum())),
+            points_done=("story_points", lambda sp: int(sp.loc[issues_df["status"] == IssueStatus.DONE].sum())),
+            points_open=("story_points", lambda sp: int(sp.loc[issues_df["status"] != IssueStatus.DONE].sum())),
             total_points=("story_points", "sum"),
             total_issues=("status", "count"),
         ).reset_index()

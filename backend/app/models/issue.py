@@ -1,11 +1,15 @@
 from sqlalchemy import Integer, String, Date, ForeignKey, Text, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 from app.models.base import Base
+from app.core.enums import IssueStatus
 
 class Issue(Base):
     __tablename__ = "issues"
     __table_args__ = (
-        CheckConstraint("status IN ('TODO','DOING','QA','DONE')", name="ck_issue_status"),
+        CheckConstraint(
+            f"status IN ({', '.join(repr(s.value) for s in IssueStatus)})",
+            name="ck_issue_status",
+        ),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)

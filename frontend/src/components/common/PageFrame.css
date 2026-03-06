@@ -1,0 +1,23 @@
+.page-frame {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.page-frame__header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.page-frame__header p {
+  margin: var(--space-2) 0 0;
+  color: var(--muted);
+}
+
+.page-frame__body {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  min-height: 220px;
+}

@@ -72,3 +72,22 @@ cd backend
   - `CODE REVIEW`
   - `TESTING`
   - `DONE`
+
+## Frontend (Fase 1 Foundation)
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Build de producao:
+
+```powershell
+cd frontend
+npm run build
+```
+
+Variavel de ambiente:
+
+- `VITE_API_BASE_URL` (padrao em `frontend/.env.example`: `http://localhost:8000`)

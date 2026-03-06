@@ -1,8 +1,10 @@
 import time
+from typing import Any
 
-_cache = {}
+_cache: dict[str, tuple[Any, float]] = {}
 
-def get_cached(key: str):
+
+def get_cached(key: str) -> Any | None:
     data = _cache.get(key)
     if not data:
         return None
@@ -15,10 +17,12 @@ def get_cached(key: str):
 
     return value
 
-def set_cached(key: str, value, ttl: int = 60):
+
+def set_cached(key: str, value: Any, ttl: int = 60) -> None:
     expires_at = time.time() + ttl
     _cache[key] = (value, expires_at)
 
-def invalidate(key: str):
+
+def invalidate(key: str) -> None:
     if key in _cache:
         del _cache[key]

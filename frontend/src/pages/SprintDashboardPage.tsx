@@ -7,12 +7,9 @@ import { PageFrame } from "@/components/common/PageFrame";
 import { AssigneeSummaryTable } from "@/components/dashboard/AssigneeSummaryTable";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SprintSelector } from "@/components/dashboard/SprintSelector";
-import { WidgetConfigPanel } from "@/components/widgets/WidgetConfigPanel";
 import { useCollaborators } from "@/hooks/useCollaborators";
 import { useSprintMetrics } from "@/hooks/useSprintMetrics";
 import { useSprints } from "@/hooks/useSprints";
-import { useSprintWidgets } from "@/hooks/useSprintWidgets";
-import type { SprintWidgetConfig } from "@/types/widgets";
 import { issueStatusLabelFromUnknown } from "@/utils/status";
 
 import "./SprintDashboardPage.css";
@@ -36,8 +33,6 @@ export function SprintDashboardPage() {
   const collaboratorsQuery = useCollaborators(undefined, 500, 0);
   const metricsQuery = useSprintMetrics(selectedSprint);
 
-  const { widgets, update, reset } = useSprintWidgets();
-
   useEffect(() => {
     if (selectedSprint !== null) {
       return;
@@ -51,43 +46,10 @@ export function SprintDashboardPage() {
     setSearchParams({ sprint_number: String(firstSprint.sprint_number) }, { replace: true });
   }, [selectedSprint, setSearchParams, sprintsQuery.data?.items]);
 
-  function renderWidget(widget: SprintWidgetConfig) {
-    if (!metricsQuery.data || !widget.enabled) {
-      return null;
-    }
-
-    if (widget.id === "burndown") {
-      return <BurndownChart key={widget.id} series={metricsQuery.data.burndownSeries} />;
-    }
-
-    if (widget.id === "status_breakdown") {
-      return (
-        <StatusBreakdownChart
-          key={widget.id}
-          totals={metricsQuery.data.statusTotals}
-          mode={widget.metricMode}
-          chartType={widget.chartType === "pie" ? "pie" : "bar"}
-        />
-      );
-    }
-
-    if (widget.id === "assignee_summary") {
-      return (
-        <AssigneeSummaryTable
-          key={widget.id}
-          rows={metricsQuery.data.perAssigneeSummary}
-          collaborators={collaboratorsQuery.data?.items ?? []}
-        />
-      );
-    }
-
-    return null;
-  }
-
   return (
-    <PageFrame title="Painel da Sprint" subtitle="KPIs consolidados da execucao e do burndown da sprint.">
+    <PageFrame title="Painel da Sprint" subtitle="Visao consolidada da execucao da sprint com foco em leitura e decisao.">
       <div className="sprint-dashboard">
-        <div className="sprint-dashboard__controls">
+        <section className="sprint-dashboard__header">
           <SprintSelector
             sprintNumber={selectedSprint}
             sprints={sprintsQuery.data?.items ?? []}
@@ -95,14 +57,10 @@ export function SprintDashboardPage() {
               setSearchParams({ sprint_number: String(sprintNumber) }, { replace: true })
             }
           />
-        </div>
-
-        <WidgetConfigPanel widgets={widgets} onChange={update} />
-        <div className="sprint-dashboard__widget-actions">
-          <button onClick={reset} type="button">
-            Restaurar widgets padrao
-          </button>
-        </div>
+          <p>
+            Acompanhamento de progresso, distribuicao por status e resumo por colaborador em um unico painel.
+          </p>
+        </section>
 
         {metricsQuery.isLoading || sprintsQuery.isLoading ? (
           <p className="sprint-dashboard__state">Carregando metricas da sprint...</p>
@@ -143,17 +101,29 @@ export function SprintDashboardPage() {
               />
             </section>
 
-            <section className="sprint-dashboard__status-cards">
-              {statusOrder.map((status) => (
-                <MetricCard
-                  key={status}
-                  label={`${issueStatusLabelFromUnknown(status)} (pts)`}
-                  value={metricsQuery.data.sprintInfo.statusPoints[status] ?? 0}
-                />
-              ))}
+            <section className="sprint-dashboard__main-grid">
+              <BurndownChart series={metricsQuery.data.burndownSeries} />
+              <div className="sprint-dashboard__status-panel">
+                <h3>Status da Sprint</h3>
+                <div className="sprint-dashboard__status-cards">
+                  {statusOrder.map((status) => (
+                    <MetricCard
+                      key={status}
+                      label={issueStatusLabelFromUnknown(status)}
+                      value={metricsQuery.data.sprintInfo.statusPoints[status] ?? 0}
+                    />
+                  ))}
+                </div>
+              </div>
             </section>
 
-            {widgets.map((widget) => renderWidget(widget))}
+            <section className="sprint-dashboard__secondary-grid">
+              <StatusBreakdownChart totals={metricsQuery.data.statusTotals} mode="points" chartType="bar" />
+              <AssigneeSummaryTable
+                rows={metricsQuery.data.perAssigneeSummary}
+                collaborators={collaboratorsQuery.data?.items ?? []}
+              />
+            </section>
           </>
         ) : null}
       </div>
